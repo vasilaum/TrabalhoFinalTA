@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -35,10 +37,23 @@ public class Funcionario extends Pessoa implements Serializable{
     @Column(name = "ativo", nullable = false)
     @NotNull(message = "Ativo nulo")
     private Boolean ativo;
+    
+    @ManyToOne
+    @JoinColumn(name = "cargo", referencedColumnName = "id", nullable = false)
+    @NotNull(message = "O cargo deve ser informado")
+    private Cargo cargo;
 
     public Funcionario() {
     }
 
+    public Cargo getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(Cargo cargo) {
+        this.cargo = cargo;
+    }
+   
     public String getNumeroCarteiraTrab() {
         return numeroCarteiraTrab;
     }

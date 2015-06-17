@@ -47,7 +47,6 @@ public abstract class Pessoa implements Serializable {
     
     @Column(name = "email", length = 50, nullable = false)
     @Email(message = "Email inválido")
-    @Length(min = 3, max = 50, message = "Entre 3 e 50 caracteres")
     @NotEmpty(message = "Campo email está vazio")
     private String email;
 
