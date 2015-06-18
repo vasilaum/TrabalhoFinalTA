@@ -31,43 +31,40 @@ public class Filme implements Serializable{
     @GeneratedValue(generator = "seq_filme", strategy = GenerationType.SEQUENCE)
     private Integer id;
     
-    @Length(min = 3, max = 50, message = "O nome deve ter entre {min} e {max} caracteres")
-    @NotEmpty(message = "O nome deve ser informada")
+    @Length(min = 3, max = 100, message = "O nome deve ter entre {min} e {max} caracteres")
+    @NotEmpty(message = "Nome obrigatório")
     @Column(name = "nome", length = 50, nullable = false)
     private String nome;
     
     @Length(min = 3, max = 50, message = "A descrição deve ter entre {min} e {max} caracteres")
-    @NotEmpty(message = "A descrição deve ser informada")
+    @NotEmpty(message = "Descrição obrigatória")
     @Column(name = "descricao", length = 50, nullable = false)
     private String descricao;
     
     @Column(name = "data_lancamento", nullable = false)
     @Temporal(TemporalType.DATE)
-    @NotNull(message = "Informe o dia de lançamento do filme")
+    @NotNull(message = "Data de lançamento obrigatória")
     private Calendar dataLancamento;
        
     @Column(name = "classificacao", nullable = false)
-    @NotNull(message = "A classificação deve ser informada")
+    @NotNull(message = "Classificação obrigatória")
     private Integer classificacao;
     
     @Column(name = "disponivel", nullable = false)
-    @NotNull(message = "Campo disponível estpa nulo")
+    @NotNull(message = "Campo disponível está nulo")
     private Boolean disponivel;
     
     @ManyToOne
-    @JoinColumn(name = "categoria",referencedColumnName = "id",nullable = false)
-    @NotNull(message = "A categoria deve ser informado")
+    @JoinColumn(name = "categoria", referencedColumnName = "id",nullable = false)
+    @NotNull(message = "Categoria obrigatória")
     private Categoria categoria;
     
     @ManyToMany
     @JoinTable(name = "filmes_locacoes",
-            // joinColumn se refere a coluna que armazena o id desta entidade
             joinColumns = 
-            @JoinColumn(name = "filme", referencedColumnName = "id"),
-            // inverseJoinColumns se refere a coluna que armazena o id 
-            //da entidade do outro lado da relação
+                @JoinColumn(name = "filme", referencedColumnName = "id"),           
             inverseJoinColumns = 
-            @JoinColumn(name = "locacoes",referencedColumnName = "id"))    
+                @JoinColumn(name = "locacoes", referencedColumnName = "id"))    
     private List<Locacoes> locacoes = new ArrayList<>();
     
     public Filme() {

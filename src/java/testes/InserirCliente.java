@@ -14,9 +14,11 @@ public class InserirCliente {
         c.setNome("Huanter");
         c.setDataNascimento(Calendar.getInstance());
         c.setCpf("029.201.100-80");
+        c.setRg("1234567891");
         c.setEmail("huanter@hotmail.com");
         c.setEndereco("Rua São Borja");
         c.setBairro("Vera Cruz");
+        c.setCep("99040-440");
         c.setDataCadastro(Calendar.getInstance());
         em.getTransaction().begin();
         em.persist(c);

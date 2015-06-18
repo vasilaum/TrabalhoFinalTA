@@ -22,7 +22,7 @@ public class Categoria implements Serializable{
     private Integer id;
     
     @Length(min = 3, max = 50, message = "A descrição deve ter entre {min} e {max} caracteres")
-    @NotEmpty(message = "A descrição deve ser informada")
+    @NotEmpty(message = "Descrição obrigatória")
     @Column(name = "descricao", length = 50, nullable = false)
     private String descricao;
 

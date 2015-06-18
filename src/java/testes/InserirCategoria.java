@@ -10,7 +10,7 @@ public class InserirCategoria {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("TrabalhoFinalTAPULocal");
         EntityManager em = emf.createEntityManager();
         Categoria c = new Categoria();
-        c.setDescricao("Aventura");
+        c.setDescricao("Comédia");
         em.getTransaction().begin();
         em.persist(c);
         em.getTransaction().commit();

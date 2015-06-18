@@ -5,10 +5,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,8 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -36,16 +32,16 @@ public class Locacoes implements Serializable {
 
     @Column(name = "data_locacao", nullable = false)
     @Temporal(TemporalType.DATE)
-    @NotNull(message = "Informe o dia de locação do filme")
+    @NotNull(message = "Data de locação obrigatória")
     private Calendar dataLocacao;
 
     @Column(name = "data_entrega", nullable = false)
     @Temporal(TemporalType.DATE)
-    @NotNull(message = "Informe o dia de entrega do filme")
+    @NotNull(message = "Data da entrega obrigatória")
     private Calendar dataEntrega;
     
     @Column(name = "valor_locacao", nullable = false)
-    @NotNull(message = "Informe o valor da locação")
+    @NotNull(message = "Valor da locação obrigatório")
     private Double valorLocacao;
     
     @Column(name = "entregue", nullable = false)
@@ -54,18 +50,15 @@ public class Locacoes implements Serializable {
     
     @ManyToOne
     @JoinColumn(name = "cliente", referencedColumnName = "id",nullable = false)
-    @NotNull(message = "O Cliente deve ser informado")
+    @NotNull(message = "Cliente obrigatório")
     private Cliente cliente;
     
     @ManyToMany
-    @JoinTable(name = "filmes_locacoes",
-            // joinColumn se refere a coluna que armazena o id desta entidade
+    @JoinTable(name = "filmes_locacoes",          
             joinColumns = 
-            @JoinColumn(name = "locacoes", referencedColumnName = "id"),
-            // inverseJoinColumns se refere a coluna que armazena o id 
-            //da entidade do outro lado da relação
+                @JoinColumn(name = "locacoes", referencedColumnName = "id"),    
             inverseJoinColumns = 
-            @JoinColumn(name = "filme",referencedColumnName = "id"))    
+                @JoinColumn(name = "filme",referencedColumnName = "id"))    
     private List<Filme> filmes = new ArrayList<>();
 
     public Locacoes() {

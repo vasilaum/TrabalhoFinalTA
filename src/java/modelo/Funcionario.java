@@ -21,26 +21,26 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class Funcionario extends Pessoa implements Serializable{
     
     @Column(name = "numero_carteira_trab", length = 20, nullable = false)
-    @Length(max = 15, min = 10, message = "Entre 10 e 15 caracteres")
-    @NotEmpty(message = "Número da carteira de trabalho nulo")
+    @Length(max = 15, min = 10, message = "Entre {min} e {max} caracteres")
+    @NotEmpty(message = "Número da carteira de trabalho obrigatório")
     private String numeroCarteiraTrab;
     
     @Column(name = "salario", nullable = false)
-    @NotNull(message = "Informe um salário")
+    @NotNull(message = "Salário obrigatório")
     private Double salario;
     
     @Column(name = "data_contratacao", nullable = false)
     @Temporal(TemporalType.DATE)
-    @NotNull(message = "Informe o dia da contratação")
+    @NotNull(message = "Data da contratação obrigatória")
     private Calendar dataContratacao;
     
     @Column(name = "ativo", nullable = false)
-    @NotNull(message = "Ativo nulo")
+    @NotNull(message = "Campo ativo está nulo")
     private Boolean ativo;
     
     @ManyToOne
     @JoinColumn(name = "cargo", referencedColumnName = "id", nullable = false)
-    @NotNull(message = "O cargo deve ser informado")
+    @NotNull(message = "Cargo obrigatório")
     private Cargo cargo;
 
     public Funcionario() {

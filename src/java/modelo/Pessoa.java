@@ -31,23 +31,28 @@ public abstract class Pessoa implements Serializable {
     private Integer id;
 
     @Column(name = "nome", length = 50, nullable = false)
-    @Length(min = 3, max = 50, message = "Entre 3 e 50 caracteres")
-    @NotEmpty(message = "Campo nome está vazio")
+    @Length(min = 3, max = 50, message = "Entre {max} e {min} caracteres")
+    @NotEmpty(message = "Campo nome obrigatório")
     private String nome;
 
     @Column(name = "data_nascimento", nullable = false)
     @Temporal(TemporalType.DATE)
-    @NotNull(message = "Data de nascimento nula")
+    @NotNull(message = "Data de nascimento obrigatória")
     private Calendar dataNascimento;
     
-    @Column(name = "cpf")
+    @Column(name = "cpf", nullable = false)
     @CPF(message = "CPF inválido")
-    @NotEmpty(message = "CPF nulo")
+    @NotEmpty(message = "CPF obrigatório")
     private String cpf;
+    
+    @Column(name = "rg", nullable = false)
+    @NotEmpty(message = "RG obrigatório")
+    @Length(max = 10, min = 10,message = "O RG deve ter {max} caracteres")
+    private String rg;
     
     @Column(name = "email", length = 50, nullable = false)
     @Email(message = "Email inválido")
-    @NotEmpty(message = "Campo email está vazio")
+    @NotEmpty(message = "Email obrigatório")
     private String email;
 
     public Pessoa() {
@@ -63,6 +68,14 @@ public abstract class Pessoa implements Serializable {
 
     public String getNome() {
         return nome;
+    }
+
+    public String getRg() {
+        return rg;
+    }
+
+    public void setRg(String rg) {
+        this.rg = rg;
     }
 
     public void setNome(String nome) {

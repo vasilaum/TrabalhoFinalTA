@@ -17,7 +17,7 @@ public class InserirFilme {
         f.setDataLancamento(Calendar.getInstance());
         f.setClassificacao(18);
         f.setDisponivel(true);
-        f.setCategoria(em.find(Categoria.class, 3));
+        f.setCategoria(em.find(Categoria.class, 1));
         em.getTransaction().begin();
         em.persist(f);
         em.getTransaction().commit();

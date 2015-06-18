@@ -1,14 +1,11 @@
 package testes;
 
-import java.io.File;
 import java.util.Calendar;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import modelo.Cargo;
 import modelo.Cliente;
 import modelo.Filme;
-import modelo.Funcionario;
 import modelo.Locacoes;
 
 public class InserirLocacoes {
@@ -20,8 +17,8 @@ public class InserirLocacoes {
         l.setDataEntrega(Calendar.getInstance());
         l.setValorLocacao(120.00);
         l.setEntregue(true);
-        l.setCliente(em.find(Cliente.class, 4));
-        l.adicionarFilmes(em.find(Filme.class, 3));
+        l.setCliente(em.find(Cliente.class, 2));
+        l.adicionarFilmes(em.find(Filme.class, 1));
         em.getTransaction().begin();
         em.persist(l);
         em.getTransaction().commit();

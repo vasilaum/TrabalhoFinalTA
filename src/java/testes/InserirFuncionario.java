@@ -25,11 +25,12 @@ public class InserirFuncionario {
         fun.setNome("Paulo");
         fun.setDataNascimento(Calendar.getInstance());
         fun.setCpf("029.201.100-80");
+        fun.setRg("1234567891");
         fun.setEmail("paulo@hotmail.com");
         fun.setNumeroCarteiraTrab("123.123.123-90");
         fun.setSalario(700.00);
         fun.setDataContratacao(Calendar.getInstance());
-        fun.setCargo(em.find(Cargo.class, 2));
+        fun.setCargo(em.find(Cargo.class, 1));
         fun.setAtivo(true);
         em.getTransaction().begin();
         em.persist(fun);
