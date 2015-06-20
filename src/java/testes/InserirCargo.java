@@ -11,7 +11,6 @@ public class InserirCargo {
         EntityManager em = emf.createEntityManager();
         Cargo c = new Cargo();
         c.setDescricao("Gerente");
-        c.setAtivo(true);
         em.getTransaction().begin();
         em.persist(c);
         em.getTransaction().commit();

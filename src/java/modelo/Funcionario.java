@@ -34,6 +34,14 @@ public class Funcionario extends Pessoa implements Serializable{
     @NotNull(message = "Data da contratação obrigatória")
     private Calendar dataContratacao;
     
+    @Column(name = "login", length = 100, nullable = false, unique = true)
+    @Length(max = 30, message = "Login deve ter no máximo {max} caracteres")
+    private String login; 
+    
+    @Column(name = "senha", length = 100, nullable = false)
+    @Length(max = 20, message = "Senha deve ter no máximo {max} caracteres")
+    private String senha;
+    
     @Column(name = "ativo", nullable = false)
     @NotNull(message = "Campo ativo está nulo")
     private Boolean ativo;

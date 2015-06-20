@@ -6,7 +6,7 @@
     
     <persistence-unit name="TrabalhoFinalTAPU" transaction-type="JTA">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <jta-data-source>jdbc/Huanter</jta-data-source>
+        <jta-data-source>jdbc/TrabalhoFinalTA</jta-data-source>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.hbm2ddl.auto" value="update"/>

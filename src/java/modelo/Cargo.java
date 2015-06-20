@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -26,10 +25,6 @@ public class Cargo implements Serializable{
     @NotEmpty(message = "Descrição obrigatória")
     @Column(name = "descricao", length = 50, nullable = false)
     private String descricao;
-    
-    @Column(name = "ativo", nullable = false)
-    @NotNull(message = "Campo ativo está nulo")
-    private Boolean ativo;
 
     public Cargo() {
     }
@@ -48,14 +43,6 @@ public class Cargo implements Serializable{
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-
-    public Boolean getAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
     }
 
     @Override
