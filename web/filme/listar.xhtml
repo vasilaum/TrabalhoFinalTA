@@ -86,10 +86,10 @@
                     <p:inputText value="#{controleFilme.objeto.descricao}"
                                  id="txtDesc" size="50" maxlength="50"/>
                     <p:outputLabel value="Data de lançamento" for="txtDataLanc"/>
-                    <p:inputText value="#{controleFilme.objeto.dataLancamento}"
-                                 id="txtDataLanc" size="50" maxlength="50">
+                    <p:calendar value="#{controleFilme.objeto.dataLancamento}"
+                                 id="txtDataLanc" pattern="dd/MM/yyyy" mask="true" locale="pt_BR">
                         <f:converter converterId="converterCalendar"/>
-                </p:inputText>
+                </p:calendar>
                 <p:outputLabel value="Classificação" for="txtClassificacao"/>
                 <p:inputText value="#{controleFilme.objeto.classificacao}"
                              id="txtClassificacao" size="50" maxlength="50" />

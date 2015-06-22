@@ -1,4 +1,5 @@
 package controle;
+
 import dao.FuncionarioDAO;
 import java.io.Serializable;
 import javax.ejb.EJB;
@@ -12,7 +13,7 @@ import util.Util;
 public class ControleFuncionario implements Serializable {
 
     @EJB
-    private FuncionarioDAO<Funcionario> dao;
+    private FuncionarioDAO dao;
     private Funcionario objeto;
 
     public ControleFuncionario() {
@@ -30,9 +31,9 @@ public class ControleFuncionario implements Serializable {
     public void salvar() {
         try {
             if (objeto.getId() == null) {
-                dao.persist(objeto);
+                dao.persistir(objeto);
             } else {
-                dao.merge(objeto);
+                dao.merger(objeto);
             }
             Util.mensagemInformacao("Objeto persistido com sucesso!");
         } catch (Exception e) {
@@ -51,13 +52,12 @@ public class ControleFuncionario implements Serializable {
     public void remover(Integer id) {
         try {
             objeto = dao.getObjectById(id);
-            dao.remove(objeto);
+            dao.remover(objeto);
             Util.mensagemInformacao("Objeto removido com sucesso!");
         } catch (Exception e) {
             Util.mensagemErro("Erro ao remover objeto: "+e.getMessage());
         }
     }
-
 
     public Funcionario getObjeto() {
         return objeto;
@@ -67,12 +67,11 @@ public class ControleFuncionario implements Serializable {
         this.objeto = objeto;
     }
 
-    public FuncionarioDAO<Funcionario> getDao() {
+    public FuncionarioDAO getDao() {
         return dao;
     }
 
-    public void setDao(FuncionarioDAO<Funcionario> dao) {
+    public void setDao(FuncionarioDAO dao) {
         this.dao = dao;
     }
-
 }
