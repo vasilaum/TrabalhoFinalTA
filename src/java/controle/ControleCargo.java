@@ -13,7 +13,7 @@ import util.Util;
 public class ControleCargo implements Serializable {
 
     @EJB
-    private CargoDAO dao;
+    private CargoDAO<Cargo> dao;
     private Cargo objeto;
 
     public ControleCargo() {
@@ -31,9 +31,9 @@ public class ControleCargo implements Serializable {
     public void salvar() {
         try {
             if (objeto.getId() == null) {
-                dao.persistir(objeto);
+                dao.persist(objeto);
             } else {
-                dao.merger(objeto);
+                dao.merge(objeto);
             }
             Util.mensagemInformacao("Objeto persistido com sucesso!");
         } catch (Exception e) {
@@ -52,12 +52,13 @@ public class ControleCargo implements Serializable {
     public void remover(Integer id) {
         try {
             objeto = dao.getObjectById(id);
-            dao.remover(objeto);
+            dao.remove(objeto);
             Util.mensagemInformacao("Objeto removido com sucesso!");
         } catch (Exception e) {
             Util.mensagemErro("Erro ao remover objeto: "+e.getMessage());
         }
     }
+
 
     public Cargo getObjeto() {
         return objeto;
@@ -67,11 +68,12 @@ public class ControleCargo implements Serializable {
         this.objeto = objeto;
     }
 
-    public CargoDAO getDao() {
+    public CargoDAO<Cargo> getDao() {
         return dao;
     }
 
-    public void setDao(CargoDAO dao) {
+    public void setDao(CargoDAO<Cargo> dao) {
         this.dao = dao;
     }
+
 }

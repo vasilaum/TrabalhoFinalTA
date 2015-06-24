@@ -1,10 +1,12 @@
 package controle;
 
 import dao.ClienteDAO;
+import dao.ClienteDAO;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import modelo.Cliente;
 import modelo.Cliente;
 import util.Util;
 
@@ -13,7 +15,7 @@ import util.Util;
 public class ControleCliente implements Serializable {
 
     @EJB
-    private ClienteDAO dao;
+    private ClienteDAO<Cliente> dao;
     private Cliente objeto;
 
     public ControleCliente() {
@@ -31,9 +33,9 @@ public class ControleCliente implements Serializable {
     public void salvar() {
         try {
             if (objeto.getId() == null) {
-                dao.persistir(objeto);
+                dao.persist(objeto);
             } else {
-                dao.merger(objeto);
+                dao.merge(objeto);
             }
             Util.mensagemInformacao("Objeto persistido com sucesso!");
         } catch (Exception e) {
@@ -52,12 +54,13 @@ public class ControleCliente implements Serializable {
     public void remover(Integer id) {
         try {
             objeto = dao.getObjectById(id);
-            dao.remover(objeto);
+            dao.remove(objeto);
             Util.mensagemInformacao("Objeto removido com sucesso!");
         } catch (Exception e) {
             Util.mensagemErro("Erro ao remover objeto: "+e.getMessage());
         }
     }
+
 
     public Cliente getObjeto() {
         return objeto;
@@ -67,11 +70,12 @@ public class ControleCliente implements Serializable {
         this.objeto = objeto;
     }
 
-    public ClienteDAO getDao() {
+    public ClienteDAO<Cliente> getDao() {
         return dao;
     }
 
-    public void setDao(ClienteDAO dao) {
+    public void setDao(ClienteDAO<Cliente> dao) {
         this.dao = dao;
     }
+
 }

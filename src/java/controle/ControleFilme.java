@@ -13,7 +13,7 @@ import util.Util;
 public class ControleFilme implements Serializable {
 
     @EJB
-    private FilmeDAO dao;
+    private FilmeDAO<Filme> dao;
     private Filme objeto;
 
     public ControleFilme() {
@@ -31,9 +31,9 @@ public class ControleFilme implements Serializable {
     public void salvar() {
         try {
             if (objeto.getId() == null) {
-                dao.persistir(objeto);
+                dao.persist(objeto);
             } else {
-                dao.merger(objeto);
+                dao.merge(objeto);
             }
             Util.mensagemInformacao("Objeto persistido com sucesso!");
         } catch (Exception e) {
@@ -52,12 +52,13 @@ public class ControleFilme implements Serializable {
     public void remover(Integer id) {
         try {
             objeto = dao.getObjectById(id);
-            dao.remover(objeto);
+            dao.remove(objeto);
             Util.mensagemInformacao("Objeto removido com sucesso!");
         } catch (Exception e) {
             Util.mensagemErro("Erro ao remover objeto: "+e.getMessage());
         }
     }
+
 
     public Filme getObjeto() {
         return objeto;
@@ -67,11 +68,12 @@ public class ControleFilme implements Serializable {
         this.objeto = objeto;
     }
 
-    public FilmeDAO getDao() {
+    public FilmeDAO<Filme> getDao() {
         return dao;
     }
 
-    public void setDao(FilmeDAO dao) {
+    public void setDao(FilmeDAO<Filme> dao) {
         this.dao = dao;
     }
+
 }

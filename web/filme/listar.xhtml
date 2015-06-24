@@ -9,16 +9,57 @@
     </h:head>
     <h:body>
         <h:form id="formListagem">
+           <p:messages/>
             <p:growl/>
             <p:commandButton action="#{controlePrincipal.home()}"
-                             icon="ui-icon-home"/>
-            <p:commandButton value="Novo"
-                             actionListener="#{controleFilme.novo()}"
-                             oncomplete="PF('dlg').show();"
-                             update=":formEdicao"
-                             icon="ui-icon-plus"/>                
-            <p:dataTable value="#{controleFilme.dao.listarTodos}"
-                         var="obj"
+                             icon="ui-icon-home"/>            
+            <div align="center">
+                <p:panelGrid columns="1">
+                    <f:facet name="header">  
+                        Filtro Ordenação e Paginação 
+                    </f:facet>                          
+                    <p:column  colspan="13" rowspan="1">     
+                        <p:commandButton actionListener="#{controleFilme.novo()}"
+                                         value="Novo" oncomplete="PF('dlg').show();"
+                                         update=":formEdicao" icon="ui-icon-plus"/>                                                        
+                        <h:outputLabel for="ordem" value="Ordem" />     
+                        <h:selectOneMenu id="ordem" 
+                                         value="#{controleFilme.dao.currentOrder}"
+                                         converter="#{controleFilme.dao.converterOrder}">
+                            <f:selectItems value="#{controleFilme.dao.listOrder}" />
+                            <p:ajax update="formListagem" 
+                                    listener="#{controleFilme.listar()}"/>
+                        </h:selectOneMenu>                            
+                        <h:outputLabel for="maximoObjetos" value="Máximo de objetos" />
+                        <p:inputText id="maximoObjetos"  
+                                     value="#{controleFilme.dao.maxObjects}" size="2"
+                                     onkeydown="Mascara(this, Integer);"
+                                     onkeypress="Mascara(this, Integer);"
+                                     onkeyup="Mascara(this, Integer);">
+                            <p:ajax update="tabela"
+                                    listener="#{controleFilme.listar()}" event="keyup"/>                          
+                        </p:inputText>                      
+                        <h:outputLabel for="filtro" value="Filtro" />
+                        <p:inputText id="filtro" placeholder="Digite o filtro"
+                                     value="#{controleFilme.dao.filter}" >
+                            <p:ajax update="tabela" 
+                                    listener="#{controleFilme.listar()}" event="keyup"/>                            
+                        </p:inputText>
+                        <p:commandButton id="btnFiltrar" update="formListagem" 
+                                         actionListener="#{controleFilme.listar()}" icon="ui-icon-search" />  
+                        <p:commandButton id="btnPrimeiro" update="formListagem" 
+                                         actionListener="#{controleFilme.dao.first()}" icon="ui-icon-seek-start"/>  
+                        <p:commandButton id="btnAnterior" update="formListagem" 
+                                         actionListener="#{controleFilme.dao.previous()}" icon="ui-icon-seek-prev"/>  
+                        <p:commandButton  id="btnProximo" update="formListagem" 
+                                          actionListener="#{controleFilme.dao.next()}" icon="ui-icon-seek-next"/>  
+                        <p:commandButton id="btnUltimo" update="formListagem" 
+                                         actionListener="#{controleFilme.dao.last()}" icon="ui-icon-seek-end" /> 
+                    </p:column>  
+                </p:panelGrid>                     
+            </div>                 
+            <p:dataTable value="#{controleFilme.dao.listObjects}"
+                         var="obj" id="tabela"
                          emptyMessage="Nenhum registro encontrado">
                 <p:column headerText="ID">
                     <p:outputLabel value="#{obj.id}"/>
@@ -57,7 +98,10 @@
                         <p:tooltip for="btnEditar" value="Editar registro" showEffect="explode"/>
                         <p:tooltip for="btnExcluir" value="Excluir registro" showEffect="explode"/>
                     </div>
-                </p:column>         
+                </p:column>
+                <f:facet name="footer">  
+                    <h:outputLabel value="#{controleFilme.dao.navigationMessage}" />
+                </f:facet> 
             </p:dataTable>
 
         </h:form>
@@ -103,7 +147,7 @@
                     <f:converter converterId="converterCategoria"/>
                     <f:selectItem noSelectionOption="true"
                                   itemLabel="Selecione um registro"/>
-                    <f:selectItems value="#{controleCategoria.dao.listarTodos}"
+                    <f:selectItems value="#{controleCategoria.dao.listObjects}"
                                    var="e"
                                    itemLabel="#{e.descricao}"/>
                 </p:selectOneMenu>

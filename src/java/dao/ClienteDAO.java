@@ -1,52 +1,27 @@
 package dao;
+import controleDAO.ConverterOrder;
+import controleDAO.GenericDAO;
+import controleDAO.Order;
 import java.io.Serializable;
-import java.util.List;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.ejb.Stateful;
 import modelo.Cliente;
 
-@Stateless
-public class ClienteDAO implements Serializable{
-    
-    @PersistenceContext(unitName = "TrabalhoFinalTAPU")
-    private EntityManager em;
-    private List<Cliente> listarTodos;
+@Stateful
+public class ClienteDAO<T> extends GenericDAO<Cliente> implements Serializable {
 
     public ClienteDAO() {
-
+        super();
+        // definindo a classe persistence
+        super.setPersistentClass(Cliente.class);
+        // definindo as ordenaçõe possiveis
+        super.getListOrder().add(
+                new Order("id", "ID", "="));
+        super.getListOrder().add(
+                new Order("nome", "Nome", "like"));
+        // definir qual a ordenação padrão
+        super.setCurrentOrder((Order) super.getListOrder().get(1));
+        super.setFilter("");
+        super.setConverterOrder(new ConverterOrder(super.getListOrder()));
     }
 
-    public void persistir(Cliente objeto) throws Exception {
-        em.persist(objeto);
-    }
-
-    public void merger(Cliente objeto) throws Exception {
-        em.merge(objeto);
-    }
-
-    public void remover(Cliente objeto) throws Exception {
-        objeto = em.merge(objeto);
-        em.remove(objeto);
-    }
-    
-    public Cliente getObjectById(Integer id) throws Exception {
-        return (Cliente) em.find(Cliente.class, id);
-    }
-
-    public List<Cliente> getListarTodos() {
-        return em.createQuery("from Cliente order by nome").getResultList();
-    }
-
-    public void setListarTodos(List<Cliente> listarTodos) {
-        this.listarTodos = listarTodos;
-    }
-
-    public EntityManager getEm() {
-        return em;
-    }
-
-    public void setEm(EntityManager em) {
-        this.em = em;
-    }
 }

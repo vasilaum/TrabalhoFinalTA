@@ -9,16 +9,57 @@
     </h:head>
     <h:body>
         <h:form id="formListagem">
+            <p:messages/>
             <p:growl/>
             <p:commandButton action="#{controlePrincipal.home()}"
-                             icon="ui-icon-home"/>
-            <p:commandButton value="Novo"
-                             actionListener="#{controleCliente.novo()}"
-                             oncomplete="PF('dlg').show();"
-                             update=":formEdicao"
-                             icon="ui-icon-plus"/>                
-            <p:dataTable value="#{controleCliente.dao.listarTodos}"
-                         var="obj"
+                             icon="ui-icon-home"/>            
+            <div align="center">
+                <p:panelGrid columns="1">
+                    <f:facet name="header">  
+                        Filtro Ordenação e Paginação 
+                    </f:facet>                          
+                    <p:column  colspan="13" rowspan="1">     
+                        <p:commandButton actionListener="#{controleCliente.novo()}"
+                                         value="Novo" oncomplete="PF('dlg').show();"
+                                         update=":formEdicao" icon="ui-icon-plus"/>                                                        
+                        <h:outputLabel for="ordem" value="Ordem" />     
+                        <h:selectOneMenu id="ordem" 
+                                         value="#{controleCliente.dao.currentOrder}"
+                                         converter="#{controleCliente.dao.converterOrder}">
+                            <f:selectItems value="#{controleCliente.dao.listOrder}" />
+                            <p:ajax update="formListagem" 
+                                    listener="#{controleCliente.listar()}"/>
+                        </h:selectOneMenu>                            
+                        <h:outputLabel for="maximoObjetos" value="Máximo de objetos" />
+                        <p:inputText id="maximoObjetos"  
+                                     value="#{controleCliente.dao.maxObjects}" size="2"
+                                     onkeydown="Mascara(this, Integer);"
+                                     onkeypress="Mascara(this, Integer);"
+                                     onkeyup="Mascara(this, Integer);">
+                            <p:ajax update="tabela"
+                                    listener="#{controleCliente.listar()}" event="keyup"/>                          
+                        </p:inputText>                      
+                        <h:outputLabel for="filtro" value="Filtro" />
+                        <p:inputText id="filtro" placeholder="Digite o filtro"
+                                     value="#{controleCliente.dao.filter}" >
+                            <p:ajax update="tabela" 
+                                    listener="#{controleCliente.listar()}" event="keyup"/>                            
+                        </p:inputText>
+                        <p:commandButton id="btnFiltrar" update="formListagem" 
+                                         actionListener="#{controleCliente.listar()}" icon="ui-icon-search" />  
+                        <p:commandButton id="btnPrimeiro" update="formListagem" 
+                                         actionListener="#{controleCliente.dao.first()}" icon="ui-icon-seek-start"/>  
+                        <p:commandButton id="btnAnterior" update="formListagem" 
+                                         actionListener="#{controleCliente.dao.previous()}" icon="ui-icon-seek-prev"/>  
+                        <p:commandButton  id="btnProximo" update="formListagem" 
+                                          actionListener="#{controleCliente.dao.next()}" icon="ui-icon-seek-next"/>  
+                        <p:commandButton id="btnUltimo" update="formListagem" 
+                                         actionListener="#{controleCliente.dao.last()}" icon="ui-icon-seek-end" /> 
+                    </p:column>  
+                </p:panelGrid>                     
+            </div>                 
+            <p:dataTable value="#{controleCliente.dao.listObjects}"
+                         var="obj" id="tabela"
                          emptyMessage="Nenhum registro encontrado">
                 <p:column headerText="ID">
                     <p:outputLabel value="#{obj.id}"/>
@@ -55,7 +96,10 @@
                         <p:tooltip for="btnEditar" value="Editar registro" showEffect="explode"/>
                         <p:tooltip for="btnExcluir" value="Excluir registro" showEffect="explode"/>
                     </div>
-                </p:column>         
+                </p:column>
+                <f:facet name="footer">  
+                    <h:outputLabel value="#{controleCliente.dao.navigationMessage}" />
+                </f:facet>   
             </p:dataTable>
 
         </h:form>

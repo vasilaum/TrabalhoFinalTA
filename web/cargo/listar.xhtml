@@ -6,63 +6,113 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Cargos</title>
+        <h:outputScript library="js" name="scripts.js"/>
     </h:head>
     <h:body>
         <h:form id="formListagem">
+            <p:messages/>
             <p:growl/>
-            <p:commandButton action="#{controlePrincipal.home()}" icon="ui-icon-home"/>            
-            <p:commandButton value="Novo" actionListener="#{controleCargo.novo()}"
-                             update=":formEdicao" icon="ui-icon-plus"
-                             oncomplete="PF('dlg').show();"/>
-            <p:dataTable value="#{controleCargo.dao.listarTodos}" var="obj"
+            <p:commandButton action="#{controlePrincipal.home()}"
+                             icon="ui-icon-home"/>            
+            <div align="center">
+                <p:panelGrid columns="1">
+                    <f:facet name="header">  
+                        Filtro Ordenação e Paginação 
+                    </f:facet>                          
+                    <p:column  colspan="13" rowspan="1">     
+                        <p:commandButton actionListener="#{controleCargo.novo()}"
+                                         value="Novo" oncomplete="PF('dlg').show();"
+                                         update=":formEdicao" icon="ui-icon-plus"/>                                                        
+                        <h:outputLabel for="ordem" value="Ordem" />     
+                        <h:selectOneMenu id="ordem" 
+                                         value="#{controleCargo.dao.currentOrder}"
+                                         converter="#{controleCargo.dao.converterOrder}">
+                            <f:selectItems value="#{controleCargo.dao.listOrder}" />
+                            <p:ajax update="formListagem" 
+                                    listener="#{controleCargo.listar()}"/>
+                        </h:selectOneMenu>                            
+                        <h:outputLabel for="maximoObjetos" value="Máximo de objetos" />
+                        <p:inputText id="maximoObjetos"  
+                                     value="#{controleCargo.dao.maxObjects}" size="2"
+                                     onkeydown="Mascara(this, Integer);"
+                                     onkeypress="Mascara(this, Integer);"
+                                     onkeyup="Mascara(this, Integer);">
+                            <p:ajax update="tabela"
+                                    listener="#{controleCargo.listar()}" event="keyup"/>                          
+                        </p:inputText>                      
+                        <h:outputLabel for="filtro" value="Filtro" />
+                        <p:inputText id="filtro" placeholder="Digite o filtro"
+                                     value="#{controleCargo.dao.filter}" >
+                            <p:ajax update="tabela" 
+                                    listener="#{controleCargo.listar()}" event="keyup"/>                            
+                        </p:inputText>
+                        <p:commandButton id="btnFiltrar" update="formListagem" 
+                                         actionListener="#{controleCargo.listar()}" icon="ui-icon-search" />  
+                        <p:commandButton id="btnPrimeiro" update="formListagem" 
+                                         actionListener="#{controleCargo.dao.first()}" icon="ui-icon-seek-start"/>  
+                        <p:commandButton id="btnAnterior" update="formListagem" 
+                                         actionListener="#{controleCargo.dao.previous()}" icon="ui-icon-seek-prev"/>  
+                        <p:commandButton  id="btnProximo" update="formListagem" 
+                                          actionListener="#{controleCargo.dao.next()}" icon="ui-icon-seek-next"/>  
+                        <p:commandButton id="btnUltimo" update="formListagem" 
+                                         actionListener="#{controleCargo.dao.last()}" icon="ui-icon-seek-end" /> 
+                    </p:column>  
+                </p:panelGrid>                     
+            </div>  
+            <p:dataTable value="#{controleCargo.dao.listObjects}"
+                         var="obj" id="tabela"
                          emptyMessage="Nenhum registro encontrado">
                 <p:column headerText="ID">
                     <p:outputLabel value="#{obj.id}"/>
                 </p:column>
                 <p:column headerText="Descrição">
                     <p:outputLabel value="#{obj.descricao}"/>
-                </p:column> 
-                <p:column headerText="Ações">
+                </p:column>         
+                <p:column headerText="Ações"> 
                     <div align="center">
-                        <p:commandButton 
-                            actionListener="#{controleCargo.editar(obj.id)}"
-                            icon="ui-icon-pencil" id="btnEditar"
-                            update=":formEdicao"
-                            oncomplete="PF('dlg').show();"/>
-                        <p:commandButton
-                            actionListener="#{controleCargo.remover(obj.id)}"
-                            icon="ui-icon-trash" id="btnExcluir"
-                            update=":formListagem"
-                            onclick="if (!confirm('Confirma a exclusão do cargo?'))return false"/>
-                        <p:tooltip for="btnEditar" value="Editar registro" showEffect="explode"/>
-                        <p:tooltip for="btnExcluir" value="Excluir registro" showEffect="explode"/>
+                        <p:commandButton actionListener="#{controleCargo.editar(obj.id)}"
+                                         oncomplete="PF('dlg').show();" 
+                                         update=":formEdicao" icon="ui-icon-pencil"/>
+                        <p:commandButton actionListener="#{controleCargo.remover(obj.id)}"
+                                         update=":formListagem" icon="ui-icon-trash"
+                                         onclick="if (!confirm('Confirma a exclusão do cargo #{obj.descricao}?'))
+                                                     return false"/>
                     </div>
-                </p:column>
-            </p:dataTable>            
+                </p:column> 
+                <f:facet name="footer">  
+                    <h:outputLabel value="#{controleCargo.dao.navigationMessage}" />
+                </f:facet>                     
+            </p:dataTable>
+
         </h:form>
 
-        <p:dialog header="Edição" widgetVar="dlg" resizable="false" modal="true">
-            <h:form id="formEdicao">
+
+        <p:dialog header="Edição" widgetVar="dlg" 
+                  resizable="false" modal="true"> 
+            <h:form id="formEdicao">                
                 <p:messages/>
                 <p:panelGrid columns="2">
                     <f:facet name="footer">
                         <div align="center">
                             <p:commandButton
-                                value="Salvar" icon="ui-icon-disk"
-                                actionListener="#{controleCargo.salvar()}"
+                                value="Salvar"
                                 update=":formListagem :formEdicao"
-                                oncomplete="if(!args.validationFailed){PF('dlg').hide();}"/>
+                                actionListener="#{controleCargo.salvar()}"                                
+                                oncomplete="if(!args.validationFailed){PF('dlg').hide();}"
+                                icon="ui-icon-disk"
+                                />
                         </div>
                     </f:facet>
                     <p:outputLabel value="ID" for="txtId"/>
-                    <p:inputText value="#{controleCargo.objeto.id}" readonly="true"
-                                 size="10" id="txtId"/>
-                    <p:outputLabel value="Nome" for="txtDesc"/>
+                    <p:inputText value="#{controleCargo.objeto.id}" id="txtId"
+                                 size="10" maxlength="10" readonly="true"/>
+                    <p:outputLabel value="Descrição" for="txtDesc"/>
                     <p:inputText value="#{controleCargo.objeto.descricao}"
-                                 id="txtDesc" size="50" maxlength="50"/>                   
-                </p:panelGrid>
+                                 id="txtDesc" size="50" maxlength="50"/>                  
+                </p:panelGrid>                
             </h:form>
         </p:dialog>
+
     </h:body>
 </html>
 

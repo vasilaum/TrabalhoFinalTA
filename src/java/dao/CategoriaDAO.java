@@ -1,52 +1,27 @@
 package dao;
+import controleDAO.ConverterOrder;
+import controleDAO.GenericDAO;
+import controleDAO.Order;
 import java.io.Serializable;
-import java.util.List;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.ejb.Stateful;
 import modelo.Categoria;
 
-@Stateless
-public class CategoriaDAO implements Serializable{
-    
-    @PersistenceContext(unitName = "TrabalhoFinalTAPU")
-    private EntityManager em;
-    private List<Categoria> listarTodos;
+@Stateful
+public class CategoriaDAO<T> extends GenericDAO<Categoria> implements Serializable {
 
-    public CategoriaDAO() {
-
+    public CategoriaDAO(){
+        super();
+        // definindo a classe persistence
+        super.setPersistentClass(Categoria.class);
+        // definindo as ordenaçõe possiveis
+        super.getListOrder().add(
+            new Order("id", "ID", "="));
+        super.getListOrder().add(
+            new Order("descricao", "Descrição", "like"));        
+        // definir qual a ordenação padrão
+        super.setCurrentOrder((Order) super.getListOrder().get(1));
+        super.setFilter("");
+        super.setConverterOrder(new ConverterOrder(super.getListOrder()));                
     }
-
-    public void persistir(Categoria objeto) throws Exception {
-        em.persist(objeto);
-    }
-
-    public void merger(Categoria objeto) throws Exception {
-        em.merge(objeto);
-    }
-
-    public void remover(Categoria objeto) throws Exception {
-        objeto = em.merge(objeto);
-        em.remove(objeto);
-    }
-    
-    public Categoria getObjectById(Integer id) throws Exception {
-        return (Categoria) em.find(Categoria.class, id);
-    }
-
-    public List<Categoria> getListarTodos() {
-        return em.createQuery("from Categoria order by descricao").getResultList();
-    }
-
-    public void setListarTodos(List<Categoria> listarTodos) {
-        this.listarTodos = listarTodos;
-    }
-
-    public EntityManager getEm() {
-        return em;
-    }
-
-    public void setEm(EntityManager em) {
-        this.em = em;
-    }
+ 
 }

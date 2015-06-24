@@ -1,52 +1,28 @@
 package dao;
+
+import controleDAO.ConverterOrder;
+import controleDAO.GenericDAO;
+import controleDAO.Order;
 import java.io.Serializable;
-import java.util.List;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.ejb.Stateful;
 import modelo.Cargo;
 
-@Stateless
-public class CargoDAO implements Serializable{
-    
-    @PersistenceContext(unitName = "TrabalhoFinalTAPU")
-    private EntityManager em;
-    private List<Cargo> listarTodos;
+@Stateful
+public class CargoDAO<T> extends GenericDAO<Cargo> implements Serializable {
 
     public CargoDAO() {
-
+        super();
+        // definindo a classe persistence
+        super.setPersistentClass(Cargo.class);
+        // definindo as ordenaçõe possiveis
+        super.getListOrder().add(
+                new Order("id", "ID", "="));
+        super.getListOrder().add(
+                new Order("descricao", "Descrição", "like"));
+        // definir qual a ordenação padrão
+        super.setCurrentOrder((Order) super.getListOrder().get(1));
+        super.setFilter("");
+        super.setConverterOrder(new ConverterOrder(super.getListOrder()));
     }
 
-    public void persistir(Cargo objeto) throws Exception {
-        em.persist(objeto);
-    }
-
-    public void merger(Cargo objeto) throws Exception {
-        em.merge(objeto);
-    }
-
-    public void remover(Cargo objeto) throws Exception {
-        objeto = em.merge(objeto);
-        em.remove(objeto);
-    }
-    
-    public Cargo getObjectById(Integer id) throws Exception {
-        return (Cargo) em.find(Cargo.class, id);
-    }
-
-    public List<Cargo> getListarTodos() {
-        return em.createQuery("from Cargo order by descricao").getResultList();
-    }
-
-    public void setListarTodos(List<Cargo> listarTodos) {
-        this.listarTodos = listarTodos;
-    }
-
-    public EntityManager getEm() {
-        return em;
-    }
-
-    public void setEm(EntityManager em) {
-        this.em = em;
-    }
 }

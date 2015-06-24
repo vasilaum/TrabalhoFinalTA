@@ -98,7 +98,7 @@
                                     <f:converter converterId="converterCliente"/>
                                     <f:selectItem noSelectionOption="true"
                                                   itemLabel="Selecione um registro"/>
-                                    <f:selectItems value="#{controleCliente.dao.listarTodos}"
+                                    <f:selectItems value="#{controleCliente.dao.listObjects}"
                                                    var="c"
                                                    itemLabel="#{c.nome}"/>
                                 </p:selectOneMenu> 
@@ -113,7 +113,7 @@
                                 <p:selectOneMenu value="#{controleLocacoes.filme}"
                                                  id="selectFilme">
                                     <f:converter converterId="converterFilme"/>
-                                    <f:selectItems value="#{controleLocacoes.daoFilme.listarTodos}"
+                                    <f:selectItems value="#{controleLocacoes.daoFilme.listObjects}"
                                                    var="p" itemLabel="#{p.nome}"/>
                                 </p:selectOneMenu>
                                 <p:commandButton 
