@@ -21,7 +21,7 @@ public class ControleFuncionario implements Serializable {
     }
 
     public String listar() {
-        return "/funcionario/listar";
+        return "privado/funcionario/listar?faces-redirect=true";
     }
 
     public void novo() {
@@ -55,10 +55,9 @@ public class ControleFuncionario implements Serializable {
             dao.remove(objeto);
             Util.mensagemInformacao("Objeto removido com sucesso!");
         } catch (Exception e) {
-            Util.mensagemErro("Erro ao remover objeto: "+e.getMessage());
+            Util.mensagemErro("Erro ao remover objeto: " + e.getMessage());
         }
     }
-
 
     public Funcionario getObjeto() {
         return objeto;

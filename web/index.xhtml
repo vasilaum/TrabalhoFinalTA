@@ -2,27 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        <h:form>
-            <p:megaMenu>                           
-                <p:menuitem value="Cargos" action="#{controleCargo.listar()}"
-                            ajax="false"/>
-                <p:menuitem value="Categorias" action="#{controleCategoria.listar()}"
-                            ajax="false"/>
-                <p:menuitem value="Clientes" action="#{controleCliente.listar()}"
-                            ajax="false"/>
-                <p:menuitem value="Filmes" action="#{controleFilme.listar()}"
-                            ajax="false"/>                            
-                <p:menuitem value="Funcionários" action="#{controleFuncionario.listar()}"
-                            ajax="false"/>    
-                <p:menuitem value="Locações" action="#{controleLocacoes.listar()}"
-                            ajax="false"/>                                                 
-            </p:megaMenu>
-        </h:form>
-    </h:body>
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="titulo">Seja bem ao sistema</ui:define>
+        <ui:define name="conteudo">Conteudo da página inicial</ui:define>
+    </ui:composition>
 </html>
-

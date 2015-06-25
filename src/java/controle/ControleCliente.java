@@ -1,12 +1,10 @@
 package controle;
 
 import dao.ClienteDAO;
-import dao.ClienteDAO;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import modelo.Cliente;
 import modelo.Cliente;
 import util.Util;
 
@@ -23,7 +21,7 @@ public class ControleCliente implements Serializable {
     }
 
     public String listar() {
-        return "/cliente/listar";
+        return "privado/cliente/listar?faces-redirect=true";
     }
 
     public void novo() {
@@ -57,10 +55,9 @@ public class ControleCliente implements Serializable {
             dao.remove(objeto);
             Util.mensagemInformacao("Objeto removido com sucesso!");
         } catch (Exception e) {
-            Util.mensagemErro("Erro ao remover objeto: "+e.getMessage());
+            Util.mensagemErro("Erro ao remover objeto: " + e.getMessage());
         }
     }
-
 
     public Cliente getObjeto() {
         return objeto;

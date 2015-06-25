@@ -1,55 +1,28 @@
 package dao;
+import controleDAO.ConverterOrder;
+import controleDAO.GenericDAO;
+import controleDAO.Order;
 import java.io.Serializable;
-import java.util.List;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.ejb.Stateful;
 import modelo.Locacoes;
 
-@Stateless
-public class LocacoesDAO implements Serializable {
-
-    @PersistenceContext(unitName = "TrabalhoFinalTAPU")
-    private EntityManager em;
-    private List<Locacoes> listarTodos;
-    
+@Stateful
+public class LocacoesDAO<T> extends GenericDAO<Locacoes> implements Serializable {
     public LocacoesDAO() {
-        
+        super();
+        super.setPersistentClass(Locacoes.class);
+        super.getListOrder().add(new Order("id", "ID", "="));
+        super.getListOrder().add(new Order("cliente.nome", "Cliente", "like"));
+        super.setCurrentOrder((Order) super.getListOrder().get(1));
+        super.setFilter("");
+        super.setConverterOrder(new ConverterOrder(super.getListOrder()));
     }
     
-    public void persistir(Locacoes objeto) throws Exception {
-        em.persist(objeto);
-    }
-    
-    public void merge(Locacoes objeto) throws Exception {
-        em.merge(objeto);
-    }
-    
-    public void remover(Locacoes objeto) throws Exception {
-        objeto = em.merge(objeto);
-        em.remove(objeto);
-    }
-    
-    public Locacoes getObjectById(Integer id) throws Exception {
-        Locacoes obj = em.find(Locacoes.class, id);
+    @Override
+     public Locacoes getObjectById(Integer id) throws Exception {
+        Locacoes obj = super.getEm().find(Locacoes.class, id);
         obj.getFilmes().size();                
         return obj ;
-    }
-    
-    public List<Locacoes> getListarTodos() {
-        return em.createQuery("from Locacoes").getResultList();
-    }
-    
-    public void setListarTodos(List<Locacoes> listarTodos) {
-        this.listarTodos = listarTodos;
-    }    
-    
-    public EntityManager getEm() {
-        return em;
-    }
-    
-    public void setEm(EntityManager em) {
-        this.em = em;
     }
     
 }

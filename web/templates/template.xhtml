@@ -7,62 +7,31 @@
       xmlns:p="http://primefaces.org/ui">
     <f:view encoding="ISO-8859-1" contentType="text/html">
         <h:head>
-            <title><ui:insert name="titulo">Titulo da pagina</ui:insert></title>
+            <title><ui:insert name="titulo">Título da pagina</ui:insert></title>
             <h:outputStylesheet library="css" name="estilos.css"/>
             <h:outputScript library="js" name="scripts.js"/>
         </h:head>
         <p:layout fullPage="true">
-            <p:layoutUnit position="north" header="Sistema Financeiro com EJB"
+            <p:layoutUnit position="north" header="Sistema Locadora"
                           style="text-align: center">
                 <h:form>
-                    <p:megaMenu>
-                        <p:submenu label="Cadastros">
-                            <p:column>
-                                <p:submenu label="Localidade">
-                                    <p:menuitem value="Estados" action="#{controleEstado.listar()}"
-                                                ajax="false"/>
-                                    <p:menuitem value="Cidades" action="#{controleCidade.listar()}"
-                                                ajax="false"/>
-                                    <p:menuitem value="Marcas" action="#{controleMarca.listar()}"
-                                                ajax="false"/>
-                                    <p:menuitem value="Grupos" action="#{controleGrupo.listar()}"
-                                                ajax="false"/>                            
-                                    <p:menuitem value="Produtos" action="#{controleProduto.listar()}"
-                                                ajax="false"/>    
-                                    <p:menuitem value="Pessoas Fisicas" 
-                                                action="#{controlePessoaFisica.listar()}"
-                                                ajax="false"/>                              
-                                </p:submenu> 
-                            </p:column>
-                        </p:submenu>
+                    <p:megaMenu>                           
+                        <p:menuitem value="Cargos" action="#{controleCargo.listar()}"
+                                    ajax="false"/>
+                        <p:menuitem value="Categorias" action="#{controleCategoria.listar()}"
+                                    ajax="false"/>
+                        <p:menuitem value="Clientes" action="#{controleCliente.listar()}"
+                                    ajax="false"/>
+                        <p:menuitem value="Filmes" action="#{controleFilme.listar()}"
+                                    ajax="false"/>                            
+                        <p:menuitem value="Funcionários" action="#{controleFuncionario.listar()}"
+                                    ajax="false"/>    
+                        <p:menuitem value="Locações" action="#{controleLocacoes.listar()}"
+                                    ajax="false"/>                                                 
                     </p:megaMenu>
                 </h:form>                              
 
-            </p:layoutUnit>
-            <p:layoutUnit position="west" header="Menu"
-                          resizable="true" 
-                          size="170">
-                <h:form id="menu">
-                    <p:menu>
-                        <p:submenu label="Cadastros">
-                            <p:menuitem value="Estados" action="#{controleEstado.listar()}"
-                                        ajax="false"/>
-                            <p:menuitem value="Cidades" action="#{controleCidade.listar()}"
-                                        ajax="false"/>
-                            <p:menuitem value="Marcas" action="#{controleMarca.listar()}"
-                                        ajax="false"/>
-                            <p:menuitem value="Grupos" action="#{controleGrupo.listar()}"
-                                        ajax="false"/>                            
-                            <p:menuitem value="Produtos" action="#{controleProduto.listar()}"
-                                        ajax="false"/>    
-                            <p:menuitem value="Pessoas Fisicas" 
-                                        action="#{controlePessoaFisica.listar()}"
-                                        ajax="false"/>                              
-                        </p:submenu>                        
-                    </p:menu>
-                </h:form>
-
-            </p:layoutUnit>
+            </p:layoutUnit>          
             <p:layoutUnit position="center">
                 <ui:insert name="conteudo">
 

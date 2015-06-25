@@ -21,7 +21,7 @@ public class ControleFilme implements Serializable {
     }
 
     public String listar() {
-        return "/filme/listar";
+        return "privado/filme/listar?faces-redirect=true";
     }
 
     public void novo() {
@@ -55,10 +55,9 @@ public class ControleFilme implements Serializable {
             dao.remove(objeto);
             Util.mensagemInformacao("Objeto removido com sucesso!");
         } catch (Exception e) {
-            Util.mensagemErro("Erro ao remover objeto: "+e.getMessage());
+            Util.mensagemErro("Erro ao remover objeto: " + e.getMessage());
         }
     }
-
 
     public Filme getObjeto() {
         return objeto;

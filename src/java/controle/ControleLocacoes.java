@@ -1,4 +1,5 @@
 package controle;
+
 import dao.FilmeDAO;
 import dao.LocacoesDAO;
 import java.io.Serializable;
@@ -14,28 +15,44 @@ import util.Util;
 public class ControleLocacoes implements Serializable {
 
     @EJB
-    private LocacoesDAO dao;
+    private LocacoesDAO<Locacoes> dao;
     private Locacoes objeto;
-    private Filme filme;
     @EJB
-    private FilmeDAO daoFilme;
+    private FilmeDAO<Filme> daoFilme;
+    private Filme filme;
 
     public ControleLocacoes() {
 
     }
 
     public String listar() {
-        return "/locacoes/listar";
+        return "privado/locacoes/listar?faces-redirect=true";
     }
 
     public void novo() {
         objeto = new Locacoes();
     }
 
+    public FilmeDAO<Filme> getDaoFilme() {
+        return daoFilme;
+    }
+
+    public void setDaoFilme(FilmeDAO<Filme> daoFilme) {
+        this.daoFilme = daoFilme;
+    }
+
+    public Filme getFilme() {
+        return filme;
+    }
+
+    public void setFilme(Filme filme) {
+        this.filme = filme;
+    }
+
     public void salvar() {
         try {
             if (objeto.getId() == null) {
-                dao.persistir(objeto);
+                dao.persist(objeto);
             } else {
                 dao.merge(objeto);
             }
@@ -56,29 +73,11 @@ public class ControleLocacoes implements Serializable {
     public void remover(Integer id) {
         try {
             objeto = dao.getObjectById(id);
-            dao.remover(objeto);
+            dao.remove(objeto);
             Util.mensagemInformacao("Objeto removido com sucesso!");
         } catch (Exception e) {
-            Util.mensagemErro("Erro ao remover objeto: "+e.getMessage());
+            Util.mensagemErro("Erro ao remover objeto: " + e.getMessage());
         }
-    }
-    
-    public void adicionarFilme(){
-        objeto.adicionarFilmes(filme);
-        Util.mensagemInformacao("Filme adicionado com sucesso");
-    }
-    
-    public void removerFilme(Filme obj){
-        objeto.removerFilmes(obj);
-        Util.mensagemInformacao("Filme removido com sucesso");
-    }
-
-    public LocacoesDAO getDao() {
-        return dao;
-    }
-
-    public void setDao(LocacoesDAO dao) {
-        this.dao = dao;
     }
 
     public Locacoes getObjeto() {
@@ -89,19 +88,22 @@ public class ControleLocacoes implements Serializable {
         this.objeto = objeto;
     }
 
-    public FilmeDAO getDaoFilme() {
-        return daoFilme;
+    public LocacoesDAO<Locacoes> getDao() {
+        return dao;
     }
 
-    public void setDaoFilme(FilmeDAO daoFilme) {
-        this.daoFilme = daoFilme;
+    public void setDao(LocacoesDAO<Locacoes> dao) {
+        this.dao = dao;
     }
 
-    public Filme getFilme() {
-        return filme;
+    public void adicionarFilme() {
+        objeto.adicionarFilmes(filme);
+        Util.mensagemInformacao("Filme adicionado com sucesso");
     }
 
-    public void setFilme(Filme filme) {
-        this.filme = filme;
+    public void removerFilme(Filme obj) {
+        objeto.removerFilmes(obj);
+        Util.mensagemInformacao("Filme removido com sucesso");
     }
+
 }

@@ -1,0 +1,205 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="titulo">Cadastro de Pessoa Fisicas</ui:define>
+        <ui:define name="conteudo">
+            <h:form id="formListagem">
+                <p:growl id="growl"/>
+                <p:commandButton action="#{controlePrincipal.home()}"
+                                 icon="ui-icon-home"/>
+                <div align="center">
+                    <p:panelGrid columns="1">
+                        <f:facet name="header">  
+                            Ordenação e Paginação 
+                        </f:facet>                          
+                        <p:column  colspan="13" rowspan="1">     
+                            <p:commandButton actionListener="#{controleLocacoes.novo()}"
+                                             value="Novo" oncomplete="PF('dlg').show();"
+                                             update=":formEdicao" icon="ui-icon-plus"/> 
+
+                            &nbsp;
+                            <h:outputLabel for="ordem" value="Ordem" /> 
+                            &nbsp;
+                            <h:selectOneMenu id="ordem" 
+                                             value="#{controleLocacoes.dao.currentOrder}"
+                                             converter="#{controleLocacoes.dao.converterOrder}">
+                                <f:selectItems value="#{controleLocacoes.dao.listOrder}" />
+                                <p:ajax update="formListagem" 
+                                        listener="#{controleLocacoes.listar()}"/>
+                            </h:selectOneMenu>
+
+                            &nbsp;
+                            <h:outputLabel for="maximoObjetos" value="Máximo de objetos" />
+                            &nbsp;
+                            <p:inputText id="maximoObjetos"  
+                                         value="#{controleLocacoes.dao.maxObjects}" size="2"
+                                         onkeydown="Mascara(this, Integer);"
+                                         onkeypress="Mascara(this, Integer);"
+                                         onkeyup="Mascara(this, Integer);">
+                                <p:ajax update="tabela"
+                                        listener="#{controleLocacoes.listar()}" event="keyup"/>                          
+                            </p:inputText>
+
+                            &nbsp;
+                            <h:outputLabel for="filtro" value="Filtro" />
+                            &nbsp;
+                            <p:inputText id="filtro" placeholder="Digite o filtro"
+                                         value="#{controleLocacoes.dao.filter}" >
+                                <p:ajax update="tabela" 
+                                        listener="#{controleLocacoes.listar()}" event="keyup"/>                            
+                            </p:inputText>
+
+                            &nbsp;
+                            <p:commandButton id="btnFiltrar" update="formListagem" 
+                                             actionListener="#{controleLocacoes.listar()}" icon="ui-icon-search" />  
+                            <p:commandButton id="btnPrimeiro" update="formListagem" 
+                                             actionListener="#{controleLocacoes.dao.first()}" icon="ui-icon-seek-start"/>  
+                            <p:commandButton id="btnAnterior" update="formListagem" 
+                                             actionListener="#{controleLocacoes.dao.previous()}" icon="ui-icon-seek-prev"/>  
+                            <p:commandButton  id="btnProximo" update="formListagem" 
+                                              actionListener="#{controleLocacoes.dao.next()}" icon="ui-icon-seek-next"/>  
+                            <p:commandButton id="btnUltimo" update="formListagem" 
+                                             actionListener="#{controleLocacoes.dao.last()}" icon="ui-icon-seek-end" /> 
+                        </p:column>  
+                    </p:panelGrid>                     
+                </div>                 
+                <p:dataTable value="#{controleLocacoes.dao.listObjects}"
+                             var="obj" id="tabela"
+                             emptyMessage="Nenhum registro encontrado">
+                    <p:column headerText="ID">
+                        <p:outputLabel value="#{obj.id}"/>
+                    </p:column>
+                    <p:column headerText="Cliente">
+                        <p:outputLabel value="#{obj.cliente.nome}"/>
+                    </p:column>
+                    <p:column headerText="Entregue">
+                        <p:outputLabel value="#{obj.entregue}">
+                            <f:converter converterId="converterBoolean"/>
+                        </p:outputLabel>
+                    </p:column>                
+                    <p:column headerText="Ações"> 
+                        <div align="center">
+                            <p:commandButton actionListener="#{controleLocacoes.editar(obj.id)}"
+                                             oncomplete="PF('dlg').show();" 
+                                             update=":formEdicao" icon="ui-icon-pencil"/>
+                            <p:commandButton actionListener="#{controleLocacoes.remover(obj.id)}"
+                                             update=":formListagem" icon="ui-icon-trash"
+                                             onclick="if (!confirm('Confirma a exclusão da locação do cliente #{obj.cliente.nome}?'))
+                                                     return false"/>
+                        </div>
+                    </p:column> 
+                    
+                    <f:facet name="footer">  
+                        <h:outputLabel value="#{controleFuncionario.dao.navigationMessage}" />
+                    </f:facet> 
+                    
+                </p:dataTable>
+
+            </h:form>
+
+        </ui:define>
+        <ui:define name="dialogos">
+            <p:dialog header="Edição" widgetVar="dlg" 
+                      resizable="false" modal="true" width="700"> 
+                <h:form id="formEdicao">                           
+                    <p:tabView id="tab" effect="scale" effectDuration="normal">
+                        <p:tab title="Dados Principais" titletip="Dados Principais">
+                            <div align="center">
+                                <p:panelGrid columns="2">
+                                    <f:facet name="footer">
+                                        <div align="center">
+                                            <p:commandButton
+                                                value="Salvar"
+                                                update=":formListagem :formEdicao"
+                                                actionListener="#{controleLocacoes.salvar()}"                                
+                                                oncomplete="if(!args.validationFailed){PF('dlg').hide();}"
+                                                icon="ui-icon-disk"
+                                                />
+                                        </div>
+                                    </f:facet>
+
+                                    <p:outputLabel value="ID" for="txtId"/>
+                                    <p:inputText value="#{controleLocacoes.objeto.id}" id="txtId"
+                                                 size="10" maxlength="10" readonly="true"/>
+
+                                    <p:outputLabel value="Data de locação" for="txtDataLoc"/>
+                                    <p:calendar value="#{controleLocacoes.objeto.dataLocacao}"
+                                                id="txtDataLoc" pattern="dd/MM/yyyy"
+                                                mask="true">
+                                        <f:converter converterId="converterCalendar"/>
+                                    </p:calendar>
+
+                                    <p:outputLabel value="Data de entrega" for="txtDataEnt"/>
+                                    <p:calendar value="#{controleLocacoes.objeto.dataEntrega}"
+                                                id="txtDataEnt" pattern="dd/MM/yyyy"
+                                                mask="true">
+                                        <f:converter converterId="converterCalendar"/>
+                                    </p:calendar>
+
+                                    <p:outputLabel value="Valor da Locação" for="txtValor"/>
+                                    <p:inputText value="#{controleLocacoes.objeto.valorLocacao}"
+                                                 id="txtValor" size="20" maxlength="20"/> 
+
+                                    <p:outputLabel value="Entregue" for="txtEntregue"/>
+                                    <p:selectBooleanCheckbox value="#{controleLocacoes.objeto.entregue}"
+                                                             id="txtEntregue"/>
+
+                                    <p:outputLabel value="Cliente" for="selectCliente"/>
+                                    <p:selectOneMenu value="#{controleLocacoes.objeto.cliente}" id="selectCliente">
+                                        <f:converter converterId="converterCliente"/>
+                                        <f:selectItem noSelectionOption="true"
+                                                      itemLabel="Selecione um registro"/>
+                                        <f:selectItems value="#{controleCliente.dao.listObjects}"
+                                                       var="c"
+                                                       itemLabel="#{c.nome}"/>
+                                    </p:selectOneMenu> 
+                                </p:panelGrid>
+                            </div>
+                        </p:tab>    
+
+                        <p:tab title="Filmes" titletip="Filmes">
+                            <div align="center">
+                                <p:panelGrid columns="3">
+                                    <p:outputLabel value="Filme"/>
+                                    <p:selectOneMenu value="#{controleLocacoes.filme}"
+                                                     id="selectFilme">
+                                        <f:converter converterId="converterFilme"/>
+                                        <f:selectItems value="#{controleLocacoes.daoFilme.listObjects}"
+                                                       var="p" itemLabel="#{p.nome}"/>
+                                    </p:selectOneMenu>
+                                    <p:commandButton 
+                                        actionListener="#{controleLocacoes.adicionarFilme()}"
+                                        update="listaFilmes :formListagem:growl" 
+                                        icon="ui-icon-plus" id="btnNovoFilme"
+                                        process="btnNovoFilme selectFilme"/>
+                                </p:panelGrid>    
+                            </div>                            
+                            <p:dataTable value="#{controleLocacoes.objeto.filmes}" var="des" 
+                                         id="listaFilmes">
+                                <p:column headerText="Filme">
+                                    <p:outputLabel value="#{des.nome}"/>                                    
+                                </p:column>                          
+                                <p:column headerText="Ações">
+                                    <div align="center">
+                                        <p:commandButton icon="ui-icon-trash"
+                                                         actionListener="#{controleLocacoes.removerFilme(des)}"
+                                                         process="btnRemoverFilme" id="btnRemoverFilme"
+                                                         update="listaFilmes :formListagem:growl"/>
+                                    </div>
+                                </p:column>                            
+                            </p:dataTable>
+                        </p:tab>
+
+                    </p:tabView>
+                </h:form>
+            </p:dialog>
+
+        </ui:define>
+    </ui:composition>
+</html>
+
