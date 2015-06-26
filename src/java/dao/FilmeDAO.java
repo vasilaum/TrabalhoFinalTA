@@ -3,6 +3,7 @@ import controleDAO.ConverterOrder;
 import controleDAO.GenericDAO;
 import controleDAO.Order;
 import java.io.Serializable;
+import java.util.List;
 import javax.ejb.Stateful;
 import modelo.Filme;
 
@@ -16,5 +17,9 @@ public class FilmeDAO<T> extends GenericDAO<Filme> implements Serializable {
         super.setCurrentOrder((Order) super.getListOrder().get(1));
         super.setFilter("");
         super.setConverterOrder(new ConverterOrder(super.getListOrder()));
+    }
+        
+    public List<Filme> ListForEnablesMovies(){
+        return super.getEm().createQuery("from Filme where disponivel = true").getResultList();
     }
 }

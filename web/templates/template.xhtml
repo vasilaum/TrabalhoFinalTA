@@ -12,8 +12,7 @@
             <h:outputScript library="js" name="scripts.js"/>
         </h:head>
         <p:layout fullPage="true">
-            <p:layoutUnit position="north" header="Sistema Locadora"
-                          style="text-align: center">
+            <p:layoutUnit position="north" style="text-align: center">
                 <h:form>
                     <p:megaMenu>                           
                         <p:menuitem value="Cargos" action="#{controleCargo.listar()}"
@@ -27,7 +26,10 @@
                         <p:menuitem value="Funcionários" action="#{controleFuncionario.listar()}"
                                     ajax="false"/>    
                         <p:menuitem value="Locações" action="#{controleLocacoes.listar()}"
-                                    ajax="false"/>                                                 
+                                    ajax="false"/> 
+                        <p:menuitem value="Sair" action="#{controleLogin.efetuarLogout()}"
+                                    ajax="false"/> 
+                        
                     </p:megaMenu>
                 </h:form>                              
 
@@ -42,8 +44,7 @@
             </ui:insert>
             <p:layoutUnit position="south">
                 <ui:include src="/templates/ajaxstatus.xhtml"/>
-                <div align="center">Direitos Reservados</div>
-            </p:layoutUnit>
+            </p:layoutUnit> 
         </p:layout>
     </f:view>
 </html>

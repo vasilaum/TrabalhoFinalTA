@@ -27,20 +27,12 @@ public class ControleLogin implements Serializable{
     public String efetuarLogin(){
         if(dao.login(funcionario, senha)){
             funcionarioLogado = dao.localizarFuncionarioPorNome(funcionario);
-//            FacesContext context = FacesContext.getCurrentInstance();
-//            HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
-//            AcessoFuncionario acesso = new AcessoFuncionario(request.getRemoteAddr());
-//            funcionarioLogado.adicionarAcesso(acesso);
-//            try{
-//                dao.merge(funcionarioLogado);
-//            }catch(Exception e){
-//                Util.mensagemErro("Erro ao salvar o acesso usuário"+e.getMessage());
-//            }
             Util.mensagemInformacao("Logado com sucesso");
             return "/index";
         }
         else{
             Util.mensagemErro("Usuário ou senha inválidos");
+            funcionarioLogado = null;
             return "/login";
         }
     }
@@ -48,7 +40,7 @@ public class ControleLogin implements Serializable{
     public String efetuarLogout(){
         funcionarioLogado = null;
         Util.mensagemInformacao("Deslgoado com sucesso");
-        return "/index";
+        return "/login";
     }
     
     public FuncionarioDAO<Funcionario> getDao() {

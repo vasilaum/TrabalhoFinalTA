@@ -4,7 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">  
     <ui:composition template="/templates/template.xhtml">
         <ui:define name="titulo">Cadastro de Pessoa Fisicas</ui:define>
         <ui:define name="conteudo">
@@ -83,7 +83,7 @@
                     <p:column headerText="Email">
                         <p:outputLabel value="#{obj.email}"/>
                     </p:column>
-
+                    
                     <p:column headerText="Login">
                         <p:outputLabel value="#{obj.login}"/>
                     </p:column>
@@ -172,7 +172,7 @@
 
                         <p:outputLabel value="Salário" for="txtSalario"/>
                         <p:inputText value="#{controleFuncionario.objeto.salario}"
-                                     id="txtSalario" size="50" maxlength="50"/>
+                                     id="txtSalario" size="50" maxlength="50" onkeydown="Mascara(this, Valor)"/>
 
                         <p:outputLabel value="Data da contratação" for="txtDataContratacao"/>
                         <p:calendar value="#{controleFuncionario.objeto.dataContratacao}"

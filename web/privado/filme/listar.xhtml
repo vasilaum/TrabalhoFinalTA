@@ -159,7 +159,7 @@
 
                         <p:outputLabel value="Classificação" for="txtClassificacao"/>
                         <p:inputText value="#{controleFilme.objeto.classificacao}"
-                                     id="txtClassificacao" size="50" maxlength="50" />
+                                     id="txtClassificacao" size="50" maxlength="2" onkeydown="Mascara(this, Integer)"/>
 
                         <p:outputLabel value="Disponível" for="txtDisponivel"/>
                         <p:selectBooleanCheckbox id="txtDisponivel" value="#{controleFilme.objeto.disponivel}"/>

@@ -77,6 +77,11 @@
                     <p:column headerText="Cliente">
                         <p:outputLabel value="#{obj.cliente.nome}"/>
                     </p:column>
+                    <p:column headerText="Valor">
+                        <p:outputLabel value="#{obj.valorLocacao}">
+                            <f:convertNumber pattern="R$ 0.00"/>
+                        </p:outputLabel>
+                    </p:column>
                     <p:column headerText="Entregue">
                         <p:outputLabel value="#{obj.entregue}">
                             <f:converter converterId="converterBoolean"/>
@@ -143,7 +148,7 @@
 
                                     <p:outputLabel value="Valor da Locação" for="txtValor"/>
                                     <p:inputText value="#{controleLocacoes.objeto.valorLocacao}"
-                                                 id="txtValor" size="20" maxlength="20"/> 
+                                                 id="txtValor" size="20" maxlength="20" onkeydown="Mascara(this, Valor)"/> 
 
                                     <p:outputLabel value="Entregue" for="txtEntregue"/>
                                     <p:selectBooleanCheckbox value="#{controleLocacoes.objeto.entregue}"
