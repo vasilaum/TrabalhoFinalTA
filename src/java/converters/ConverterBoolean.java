@@ -20,7 +20,7 @@ public class ConverterBoolean implements Serializable, Converter {
             return "Sim";
         }
         else{
-            return "não";
+            return "Não";
         }
     }
 }

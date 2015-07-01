@@ -26,11 +26,18 @@
                         <p:menuitem value="Funcionários" action="#{controleFuncionario.listar()}"
                                     ajax="false"/>    
                         <p:menuitem value="Locações" action="#{controleLocacoes.listar()}"
-                                    ajax="false"/> 
-                        <p:menuitem value="Sair" action="#{controleLogin.efetuarLogout()}"
-                                    ajax="false"/> 
-                        
+                                    ajax="false"/>                      
+                        <p:submenu rendered="#{controleLogin.funcionarioLogado != null}"
+                                   label="#{controleLogin.funcionarioLogado.nome}">
+                            <p:column>
+                                <p:submenu label="Ações">
+                                    <p:menuitem value="Sair" action="#{controleLogin.efetuarLogout()}"
+                                                ajax="false"/>
+                                </p:submenu>
+                            </p:column>
+                        </p:submenu>
                     </p:megaMenu>
+
                 </h:form>                              
 
             </p:layoutUnit>          
